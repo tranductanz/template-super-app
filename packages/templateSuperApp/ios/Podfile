@@ -8,6 +8,24 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
+
+def __xcode_15_workaround(installer)
+  xcode_version_output = `xcodebuild -version`
+  xcode_version_match = xcode_version_output.match(/Xcode (\d+(\.\d+)?)/)
+
+  if xcode_version_match
+    xcode_version = Gem::Version.new(xcode_version_match[1])
+    if xcode_version >= Gem::Version.new('15.0')
+      installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
+        end
+      end
+    end
+  end
+end
+
+
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
 # because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
 #
@@ -30,6 +48,9 @@ target 'templateSuperApp' do
 
   use_react_native!(
     :path => config[:reactNativePath],
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    :hermes_enabled => true,
+    :fabric_enabled => false,
     # Enables Flipper.
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
@@ -39,17 +60,22 @@ target 'templateSuperApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+
   target 'templateSuperAppTests' do
     inherit! :complete
     # Pods for testing
   end
 
   post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    __xcode_15_workaround(installer)
     react_native_post_install(
       installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
+    installer.pods_project.build_configurations.each do |config|
+        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+      config.build_settings['SWIFT_VERSION'] = '5.7.1'
+        end
   end
 end

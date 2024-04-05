@@ -4,5 +4,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "start:app": "yarn workspace templateSuperApp run start",
+    "start:metro": "yarn workspace templateSuperApp run start:metro"
+  },
   "packageManager": "yarn@4.1.1"
 }
