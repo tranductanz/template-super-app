@@ -1,3 +1,4 @@
+
 import { View, Text, StyleSheet, Button } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
@@ -8,6 +9,7 @@ const HomeScreen = () => {
         <View style={styles.container}>
             <Text>HomeScreen</Text>
             <Button title='Go to Detail' onPress={() => {
+                //@ts-ignore
                 navigation.navigate('Detail')
             }} />
         </View>

@@ -9301,6 +9301,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-device-info@npm:^10.13.1":
+  version: 10.13.1
+  resolution: "react-native-device-info@npm:10.13.1"
+  peerDependencies:
+    react-native: "*"
+  checksum: 10c0/a81083266cefec7d4dd9e32838ac8b67b19446b8b8d14e7d3dae3ce93a4ddfb84c1e8afc0046f99122246bcd35c4ab8fa76ecdd22643153f2a772bf4913e461b
+  languageName: node
+  linkType: hard
+
 "react-native-reanimated@npm:3.6.2":
   version: 3.6.2
   resolution: "react-native-reanimated@npm:3.6.2"
@@ -10574,6 +10583,7 @@ __metadata:
     react: "npm:18.2.0"
     react-native: "npm:0.73.6"
     react-native-config: "npm:1.5.1"
+    react-native-device-info: "npm:^10.13.1"
     react-native-reanimated: "npm:3.6.2"
     react-native-safe-area-context: "npm:4.9.0"
     react-native-screens: "npm:3.30.1"
